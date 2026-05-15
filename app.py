@@ -168,23 +168,30 @@ st.markdown("""
         flex-wrap: wrap;
         gap: 8px;
         justify-content: center;
-        margin-top: 20px;
+        margin-top: -20px;
+        margin-bottom: 20px;
     }
 
-    .example-query {
-        background: rgba(102, 126, 234, 0.15);
-        border: 1px solid rgba(102, 126, 234, 0.3);
-        border-radius: 20px;
-        padding: 8px 16px;
-        color: #a8b2d1;
-        font-size: 0.85rem;
-        cursor: pointer;
-        transition: all 0.2s;
+    /* Öneri butonları özel stili */
+    div[data-testid="column"] .stButton > button {
+        background: rgba(102, 126, 234, 0.1) !important;
+        border: 1px solid rgba(102, 126, 234, 0.2) !important;
+        border-radius: 20px !important;
+        padding: 6px 12px !important;
+        color: #a8b2d1 !important;
+        font-size: 0.8rem !important;
+        font-weight: 400 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        line-height: 1.4 !important;
+        transition: all 0.2s ease !important;
     }
 
-    .example-query:hover {
-        background: rgba(102, 126, 234, 0.3);
-        color: #ccd6f6;
+    div[data-testid="column"] .stButton > button:hover {
+        background: rgba(102, 126, 234, 0.25) !important;
+        border-color: rgba(102, 126, 234, 0.4) !important;
+        color: #ccd6f6 !important;
+        transform: translateY(-1px) !important;
     }
 
     /* Divider */
@@ -217,6 +224,8 @@ if "vector_db_ready" not in st.session_state:
     st.session_state.vector_db_ready = vector_store_exists()
 if "indexing" not in st.session_state:
     st.session_state.indexing = False
+if "suggestion_clicked" not in st.session_state:
+    st.session_state.suggestion_clicked = None
 
 
 # ─── Sidebar ─────────────────────────────────────────────────────────────────
@@ -360,14 +369,25 @@ if not st.session_state.messages:
             Veritabanında <strong>4.400+</strong> monitör hakkında bilgi bulunuyor.
             Monitör seçimi, karşılaştırma ve teknik özellikler hakkında bana sorabilirsiniz.
         </p>
-        <div class="example-queries">
-            <span class="example-query">🎮 En iyi OLED gaming monitör hangisi?</span>
-            <span class="example-query">💼 Ofis için 27 inç 4K monitör öner</span>
-            <span class="example-query">🔍 240Hz ve üzeri monitörler</span>
-            <span class="example-query">📊 Samsung vs LG OLED karşılaştır</span>
-        </div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Öneri soruları
+    example_questions = [
+        "🎮 En iyi OLED gaming monitör hangisi?",
+        "💼 Ofis için 27 inç 4K monitör öner",
+        "🔍 240Hz ve üzeri monitörler",
+        "📊 Samsung vs LG OLED karşılaştır"
+    ]
+
+    # Butonları merkeze hizalamak için boş kolonlar kullanılabilir veya flex yapısı simüle edilebilir
+    # Burada 4 butonu yan yana diziyoruz
+    cols = st.columns(len(example_questions))
+    for i, question in enumerate(example_questions):
+        with cols[i]:
+            if st.button(question, key=f"q_suggest_{i}", use_container_width=True):
+                st.session_state.suggestion_clicked = question
+                st.rerun()
 
 # Mevcut mesajları göster
 for message in st.session_state.messages:
@@ -375,7 +395,14 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # ─── Chat Input ──────────────────────────────────────────────────────────────
-if prompt := st.chat_input("Monitör hakkında bir soru sorun...", disabled=not st.session_state.vector_db_ready):
+prompt = st.chat_input("Monitör hakkında bir soru sorun...", disabled=not st.session_state.vector_db_ready)
+
+# Öneri tıklandıysa prompt'u güncelle
+if st.session_state.suggestion_clicked:
+    prompt = st.session_state.suggestion_clicked
+    st.session_state.suggestion_clicked = None
+
+if prompt:
     # Kullanıcı mesajını ekle
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar="🧑‍💻"):
