@@ -1,66 +1,105 @@
-Monitor Assistant LLM
-Proje Hakkında
+# 🖥️ Monitor Assistant LLM
 
-Bu proje, monitörler hakkında kullanıcıların doğal dilde soru sorabilmesini sağlayan bir LLM (Large Language Model) destekli soru-cevap sistemidir.
+## 📌 Proje Hakkında
 
-Sistem, monitör verilerini çeşitli web sitelerinden web scraping yöntemleri ile toplayarak yapılandırılmış hale getirir. Toplanan veriler embedding işleminden geçirilerek vektör veritabanında saklanır ve kullanıcı sorgularına en alakalı sonuçlar Retrieval-Augmented Generation (RAG) yaklaşımı ile sunulur.
+Bu proje, monitörler hakkında kullanıcıların doğal dilde soru sorabilmesini sağlayan RAG (Retrieval-Augmented Generation) tabanlı bir LLM sistemidir.
 
-Kullanılan Teknolojiler
-Python
-Web Scraping
-Ollama
-Qwen 2.5
-BGE-M3 Embedding Model
-ChromaDB
-RAG (Retrieval-Augmented Generation)
-Sistem Mimarisi
-Monitör bilgileri web scraping yöntemi ile hedef web sitesinden çekilir.
-Elde edilen veriler temizlenir ve işlenir.
-Metinler BGE-M3 embedding modeli kullanılarak vektörlere dönüştürülür.
-Oluşturulan embeddingler ChromaDB içerisinde saklanır.
-Kullanıcıdan gelen sorular embeddinge dönüştürülür.
-ChromaDB üzerinden en alakalı monitör verileri getirilir.
-Qwen 2.5 modeli, getirilen bağlamı kullanarak kullanıcıya anlamlı cevaplar üretir.
-Özellikler
-Monitörler hakkında doğal dilde soru sorma
-Web scraping ile otomatik veri toplama
-Vektör tabanlı semantik arama
-RAG destekli cevap üretimi
-Yerel ortamda çalışan Ollama entegrasyonu
-Hızlı ve ölçeklenebilir veri erişimi
-Örnek Sorular
-Oyun için en uygun 27 inç monitör hangisi?
-144 Hz ve üzeri monitörleri listele.
-IPS panel kullanan monitörler nelerdir?
-5000 TL altındaki monitör seçenekleri nelerdir?
-Bu monitörün avantajları ve dezavantajları nelerdir?
-Kurulum
+Sistem kapsamında monitör verileri web scraping yöntemleri kullanılarak hedef web sitesinden elde edilmiş, daha sonra embedding işlemleri uygulanarak vektör veritabanına kaydedilmiştir. Kullanıcıdan gelen sorular, semantik arama yardımıyla ilgili monitör verileriyle eşleştirilmekte ve büyük dil modeli tarafından anlamlı cevaplar üretilmektedir.
+
+## 🚀 Kullanılan Teknolojiler
+
+- Python
+- Web Scraping (BeautifulSoup, Requests)
+- Ollama
+- Qwen 2.5
+- BGE-M3 Embedding Model
+- ChromaDB
+- RAG (Retrieval-Augmented Generation)
+
+## 🏗️ Sistem Mimarisi
+
+1. Monitör verileri web scraping ile toplanır.
+2. Toplanan veriler temizlenerek işlenir.
+3. BGE-M3 modeli kullanılarak embedding'ler oluşturulur.
+4. Embedding verileri ChromaDB içerisine kaydedilir.
+5. Kullanıcının sorusu embedding'e dönüştürülür.
+6. ChromaDB üzerinden en alakalı veriler getirilir.
+7. Qwen 2.5 modeli bağlamı kullanarak yanıt üretir.
+
+## ✨ Özellikler
+
+- Monitörler hakkında doğal dilde soru-cevap
+- Web scraping ile otomatik veri toplama
+- Semantik arama desteği
+- ChromaDB tabanlı vektör veritabanı
+- Yerel ortamda çalışan Ollama entegrasyonu
+- RAG mimarisi ile daha doğru cevaplar
+- Monitör özellikleri ve karşılaştırmaları hakkında bilgi sunma
+
+## 💬 Örnek Sorular
+
+- Oyun için en uygun monitör hangisidir?
+- 144 Hz ve üzeri monitörleri listele.
+- IPS panel kullanan monitörler nelerdir?
+- 27 inç monitör önerileri nelerdir?
+- Bu monitörün avantajları ve dezavantajları nelerdir?
+- Fiyat/performans açısından hangi monitör daha iyidir?
+
+## ⚙️ Kurulum
+
+Projeyi klonlayın:
+
+```bash
 git clone <repo-url>
 cd monitor-assistant
+```
 
-Gerekli bağımlılıkları yükleyin:
+Gerekli paketleri yükleyin:
 
+```bash
 pip install -r requirements.txt
+```
 
-Ollama'yı çalıştırın:
+Ollama servisini başlatın:
 
+```bash
 ollama run qwen2.5
+```
 
 Verileri kazıyın:
 
+```bash
 python scraper.py
+```
 
-Embedding oluşturun:
+Embedding oluşturun ve veritabanına kaydedin:
 
+```bash
 python embedding.py
+```
 
-Uygulamayı başlatın:
+Uygulamayı çalıştırın:
 
+```bash
 python app.py
-Amaç
+```
 
-Bu proje, web scraping, embedding modelleri, vektör veritabanları ve büyük dil modellerinin birlikte kullanıldığı uçtan uca bir RAG sisteminin geliştirilmesini amaçlamaktadır. Kullanıcıların monitör ürünleri hakkında hızlı, doğru ve bağlama uygun bilgi alabilmesi hedeflenmiştir.
+## 🎯 Projenin Amacı
 
-Geliştiriciler
+Bu proje, web scraping, embedding modelleri, vektör veritabanları ve büyük dil modellerinin birlikte kullanıldığı bir RAG sisteminin geliştirilmesini amaçlamaktadır. Kullanıcıların monitörler hakkında hızlı, doğru ve bağlama uygun bilgilere erişebilmesi hedeflenmiştir.
 
-Bu proje eğitim ve araştırma amaçlı geliştirilmiştir.
+## 📚 Öğrenilen Konular
+
+- Web Scraping
+- Veri Ön İşleme
+- Embedding Modelleri
+- Vektör Veritabanları
+- ChromaDB
+- Ollama Kullanımı
+- Qwen 2.5 Entegrasyonu
+- Retrieval-Augmented Generation (RAG)
+- LLM Tabanlı Soru-Cevap Sistemleri
+
+## 👨‍💻 Geliştirici
+
+Bu proje eğitim ve araştırma amacıyla geliştirilmiştir.
